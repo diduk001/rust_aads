@@ -67,6 +67,7 @@ mod segment_tree_tests {
     fn random_100_i32s_get_set_add_test() {
         let mut rng = rand::thread_rng();
         let n: usize = 100;
+        // Generate n random elements in range -10..10
         let mut v: Vec<i32> = (0..n).map(|_| rng.gen_range(-10..10)).collect();
         let mut segtree: SegmentTree<i32> = SegmentTree::new(&v, 0, add_i32s);
 
@@ -92,7 +93,7 @@ mod segment_tree_tests {
 mod sorting_tests {
     use super::*;
     use rand::Rng;
-    use sortings::bubble_sort;
+    use sortings::*;
 
     /// Checks if v is sorted using comparator
     fn is_sorted<T: Copy>(v: &Vec<T>, cmp: fn(T, T) -> bool) -> bool {
@@ -108,23 +109,43 @@ mod sorting_tests {
     /// Comparator for i32s
     fn less_equal(a: i32, b: i32) -> bool { return a <= b; }
 
-    #[test]
-    /// Basic 10 elements
-    fn basic_10_elements_test() {
+    /// Basic 10 elements test, compares sorting_func result with correct result
+    ///
+    /// # Arguments:
+    /// * sorting_func - sorting function (accepts Vec of i32s and comparator)
+    fn basic_10_elements_test(sorting_func: fn(&mut Vec<i32>, fn(i32, i32) -> bool)) {
         let mut v: Vec<i32> = vec![6, 4, 7, 2, 3, 9, 1, 8, 10, 5];
         let correct: Vec<i32> = vec![1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
-        bubble_sort(&mut v, less_equal);
+        (sorting_func)(&mut v, less_equal);
         assert_eq!(correct, v);
     }
 
-    #[test]
-    fn random_1000_i32s_test() {
+    /// Randomly generated 1000 int32s test, checks if sorting_func result is sorted
+    ///
+    /// # Arguments:
+    /// * sorting_func - sorting function (accepts Vec of i32s and comparator)
+    fn random_1000_i32s_test(sorting_func: fn(&mut Vec<i32>, fn(i32, i32) -> bool)) {
         let mut rng = rand::thread_rng();
         let n: usize = 1000;
+        // Generate n random elements in range -1000..1000
         let mut v: Vec<i32> = (0..n).map(|_| rng.gen_range(-1000..1000)).collect();
 
-        bubble_sort(&mut v, less_equal);
+        // Call sorting function with v and less_equal comparator
+        (sorting_func)(&mut v, less_equal);
+        // Check if v is sorted
         assert!(is_sorted(&v, less_equal));
+    }
+
+    #[test]
+    /// Nested for loop iterating over testing functions and sorting functions
+    fn test_all_sorting_functions() {
+        let sorting_functions = [bubble_sort, selection_sort];
+        let testing_functions = [basic_10_elements_test, random_1000_i32s_test];
+        for sorting_function in sorting_functions.iter() {
+            for testing_function in testing_functions.iter() {
+                (testing_function)(*sorting_function);
+            }
+        }
     }
 }
