@@ -97,7 +97,14 @@ impl<T: Eq + Copy> SegmentTree<T> {
     /// * `tree_r` - right bound of node in array (non-inclusive)
     /// * `query_l` - left bound of query
     /// * `query_r` - right bound of query (non-inclusive)
-    fn __get(&self, tree_id: usize, tree_l: usize, tree_r: usize, query_l: usize, query_r: usize) -> T {
+    fn __get(
+        &self,
+        tree_id: usize,
+        tree_l: usize,
+        tree_r: usize,
+        query_l: usize,
+        query_r: usize,
+    ) -> T {
         if query_l <= tree_l && tree_r <= query_r {
             // tree_l..tree_r completely lies in query_l..query_r
             return self.tree[tree_id];
@@ -126,7 +133,7 @@ impl<T: Eq + Copy> SegmentTree<T> {
 
     /// Sets `i`-th element of segment tree to `new_val` and updates tree
     ///
-    /// # Arguments
+    /// # Arguments:
     /// * `tree_id` - current node index
     /// * `tree_l` - left bound of node in array
     /// * `tree_r` - right bound of node in array (non-inclusive)
@@ -153,7 +160,7 @@ impl<T: Eq + Copy> SegmentTree<T> {
 
     /// Friendly interface of `__set` with `i` assert
     ///
-    /// # Arguments
+    /// # Arguments:
     /// * `i` - index of element in initial array
     /// * `new_val` - new value of `i`-th element
     pub fn set(&mut self, i: usize, new_val: T) {

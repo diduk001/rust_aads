@@ -78,8 +78,7 @@ mod segment_tree_tests {
 
             for l_idx in 0..n {
                 for r_idx in l_idx + 1..=n {
-                    let sum_correct: i32 =
-                        compute_function_on_segment(&v, add_i32s, l_idx, r_idx);
+                    let sum_correct: i32 = compute_function_on_segment(&v, add_i32s, l_idx, r_idx);
                     let sum_computed_by_segtree: i32 = segtree.get(l_idx, r_idx);
                     assert_eq!(sum_computed_by_segtree, sum_correct);
                 }
@@ -87,7 +86,6 @@ mod segment_tree_tests {
         }
     }
 }
-
 
 #[cfg(test)]
 mod sorting_tests {
@@ -107,7 +105,9 @@ mod sorting_tests {
     }
 
     /// Comparator for i32s
-    fn less_equal(a: i32, b: i32) -> bool { return a <= b; }
+    fn less_equal(a: i32, b: i32) -> bool {
+        return a <= b;
+    }
 
     /// Basic 10 elements test, compares sorting_func result with correct result
     ///
@@ -140,7 +140,7 @@ mod sorting_tests {
     #[test]
     /// Nested for loop iterating over testing functions and sorting functions
     fn test_all_sorting_functions() {
-        let sorting_functions = [bubble_sort, selection_sort];
+        let sorting_functions = [bubble_sort, selection_sort, insertion_sort];
         let testing_functions = [basic_10_elements_test, random_1000_i32s_test];
         for sorting_function in sorting_functions.iter() {
             for testing_function in testing_functions.iter() {

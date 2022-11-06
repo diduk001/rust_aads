@@ -1,7 +1,7 @@
 /// Sorts vector using [bubble sort algorithm](https://en.wikipedia.org/wiki/Bubble_sort), time
 /// complexity is O(N^2)
 ///
-/// # Arguments
+/// # Arguments:
 /// * v - mutable vector, that will be sorted
 /// * cmp - function, comparator for sorting
 pub fn bubble_sort<T: Copy>(v: &mut Vec<T>, cmp: fn(T, T) -> bool) {
@@ -18,7 +18,7 @@ pub fn bubble_sort<T: Copy>(v: &mut Vec<T>, cmp: fn(T, T) -> bool) {
 /// Sorts vector using [selection sort algorithm](https://en.wikipedia.org/wiki/Selection_sort),
 /// time complexity is O(N^2)
 ///
-/// # Arguments
+/// # Arguments:
 /// * v - mutable vector, that will be sorted
 /// * cmp - function, comparator for sorting
 pub fn selection_sort<T: Copy>(v: &mut Vec<T>, cmp: fn(T, T) -> bool) {
@@ -27,9 +27,28 @@ pub fn selection_sort<T: Copy>(v: &mut Vec<T>, cmp: fn(T, T) -> bool) {
         // Find first_idx (minimum) and place it into beginning of v
         let mut first_idx = i;
         for j in i + 1..n {
-            if cmp(v[j], v[first_idx]) { first_idx = j; }
+            if cmp(v[j], v[first_idx]) {
+                first_idx = j;
+            }
         }
 
         v.swap(i, first_idx);
+    }
+}
+
+/// Sorts vector using [insertion sort algorithm](https://en.wikipedia.org/wiki/Insertion_sort),
+/// time complexity is O(N^2)
+///
+/// # Arguments:
+/// * v - mutable vector, that will be sorted
+/// * cmp - function, comparator for sorting
+pub fn insertion_sort<T: Copy>(v: &mut Vec<T>, cmp: fn(T, T) -> bool) {
+    let n: usize = v.len();
+    for i in 1..n {
+        let mut j = i;
+        while j > 0 && cmp(v[j], v[j - 1]) {
+            v.swap(j, j - 1);
+            j -= 1;
+        }
     }
 }
