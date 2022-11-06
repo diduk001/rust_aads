@@ -2,9 +2,15 @@
 /// segment.
 ///
 /// Segment tree described [here](https://en.wikipedia.org/wiki/Segment_tree) and
-/// [here](https://cp-algorithms.com/data_structures/segment_tree.html)
+/// [here](https://cp-algorithms.com/data_structures/segment_tree.html).
+///
+/// Memory complexity - O(N)
+///
+/// Time complexity:
+/// * `get` - O(logN)
+/// * `set` - O(logN)
 pub struct SegmentTree<T: Eq + Copy> {
-    /// `tree` is a vector containing each node's value
+    /// `tree` is a vector containing each node's value. `tree[0]` is a root node
     tree: Vec<T>,
     /// `n` is initial vector's size
     n: usize,
@@ -26,22 +32,22 @@ impl<T: Eq + Copy> SegmentTree<T> {
     ///
     /// # Arguments:
     ///
-    /// * `vec` - An initial vector
+    /// * `v` - An initial vector
     /// * `identity` - An identity element, such as `0` for addition or `1` for multiplication
     /// * `combine_fn` - A function, which will be computed on query. Arguments are 2 `T`
     /// instances and return type is `T`
-    pub fn new(vec: &Vec<T>, identity: T, combine_fn: fn(T, T) -> T) -> SegmentTree<T> {
+    pub fn new(v: &Vec<T>, identity: T, combine_fn: fn(T, T) -> T) -> SegmentTree<T> {
         let mut seg_tree: SegmentTree<T> = SegmentTree {
             /// `tree` initially is a vector filled with
             /// `identity` of size `4 * vec.len`
-            tree: vec![identity; 4 * vec.len()],
-            n: vec.len(),
+            tree: vec![identity; 4 * v.len()],
+            n: v.len(),
             identity,
             combine_fn,
         };
 
         // Building segment tree
-        seg_tree.__build(vec, 0, 0, seg_tree.n);
+        seg_tree.__build(v, 0, 0, seg_tree.n);
 
         return seg_tree;
     }
@@ -61,88 +67,88 @@ impl<T: Eq + Copy> SegmentTree<T> {
     ///
     /// # Arguments:
     ///
-    /// * `vec` - initial vector
-    /// * `v` - current node index
-    /// * `l` - left bound of node in array
-    /// * `r` - right bound of node in array (non-inclusive)
+    /// * `v` - initial vector
+    /// * `tree_id` - current node index
+    /// * `tree_l` - left bound of node in array
+    /// * `tree_r` - right bound of node in array (non-inclusive)
     ///
-    /// In other words, `tree[v]` contains result of `combine_fn` for `vec[l..r]`
-    fn __build(&mut self, vec: &Vec<T>, v: usize, l: usize, r: usize) {
+    /// In other words, `tree[tree_id]` contains result of `combine_fn` for `v[tree_l..tree_r]`
+    fn __build(&mut self, v: &Vec<T>, tree_id: usize, tree_l: usize, tree_r: usize) {
         // Node contains one element case
-        if r - l == 1 {
-            self.tree[v] = vec[l];
+        if tree_r - tree_l == 1 {
+            self.tree[tree_id] = v[tree_l];
             return;
         }
 
         // Divide l..r into two halves, build two children of a node and combine two children's
         // result
-        let m: usize = (l + r) / 2;
-        self.__build(vec, 2 * v + 1, l, m);
-        self.__build(vec, 2 * v + 2, m, r);
-        self.tree[v] = self.__combine(self.tree[2 * v + 1], self.tree[2 * v + 2]);
+        let m: usize = (tree_l + tree_r) / 2;
+        self.__build(v, 2 * tree_id + 1, tree_l, m);
+        self.__build(v, 2 * tree_id + 2, m, tree_r);
+        self.tree[tree_id] = self.__combine(self.tree[2 * tree_id + 1], self.tree[2 * tree_id + 2]);
     }
 
-    /// Returns `combine_fn` result for `vec[lq..rq]` query
+    /// Returns `combine_fn` result for `v[lq..rq]` query
     ///
     /// # Arguments:
     ///
-    /// * `v` - current node index
-    /// * `l` - left bound of node in array
-    /// * `r` - right bound of node in array (non-inclusive)
-    /// * `lq` - left bound of query
-    /// * `lq` - right bound of query (non-inclusive)
-    fn __get(&self, v: usize, l: usize, r: usize, lq: usize, rq: usize) -> T {
-        if lq <= l && r <= rq {
-            // l..r completely lies in lq..rq
-            return self.tree[v];
-        } else if r <= lq || rq <= l {
-            // l..r does not intersect with lq..rq
+    /// * `tree_id` - current node index
+    /// * `tree_l` - left bound of node in array
+    /// * `tree_r` - right bound of node in array (non-inclusive)
+    /// * `query_l` - left bound of query
+    /// * `query_r` - right bound of query (non-inclusive)
+    fn __get(&self, tree_id: usize, tree_l: usize, tree_r: usize, query_l: usize, query_r: usize) -> T {
+        if query_l <= tree_l && tree_r <= query_r {
+            // tree_l..tree_r completely lies in query_l..query_r
+            return self.tree[tree_id];
+        } else if tree_r <= query_l || query_r <= tree_l {
+            // tree_l..tree_r doesn't intersect with query_l..query_r
             return self.identity;
         }
 
-        // Divide l..r into two halves and get answer from two children of a node
-        let m: usize = (l + r) / 2;
-        let l_child: T = self.__get(2 * v + 1, l, m, lq, rq);
-        let r_child: T = self.__get(2 * v + 2, m, r, lq, rq);
+        // Divide tree_l..tree_r into two halves and get answer from two children of a node
+        let m: usize = (tree_l + tree_r) / 2;
+        let l_child: T = self.__get(2 * tree_id + 1, tree_l, m, query_l, query_r);
+        let r_child: T = self.__get(2 * tree_id + 2, m, tree_r, query_l, query_r);
         return self.__combine(l_child, r_child);
     }
 
     /// Friendly interface of `__get` with query bounds assert
     ///
     /// # Arguments:
-    /// * `lq` - left bound of query
-    /// * `lq` - right bound of query (non-inclusive)
-    pub fn get(&self, lq: usize, rq: usize) -> T {
+    /// * `query_l` - left bound of query
+    /// * `query_r` - right bound of query (non-inclusive)
+    pub fn get(&self, query_l: usize, query_r: usize) -> T {
         // Assert query bounds
-        assert!(lq < rq && (lq < self.n) && (0 < rq && rq <= self.n));
-        return self.__get(0, 0, self.n, lq, rq);
+        assert!(query_l < query_r && (query_l < self.n) && (0 < query_r && query_r <= self.n));
+        return self.__get(0, 0, self.n, query_l, query_r);
     }
 
     /// Sets `i`-th element of segment tree to `new_val` and updates tree
     ///
     /// # Arguments
-    /// * `v` - current node index
-    /// * `l` - left bound of node in array
-    /// * `r` - right bound of node in array (non-inclusive)
+    /// * `tree_id` - current node index
+    /// * `tree_l` - left bound of node in array
+    /// * `tree_r` - right bound of node in array (non-inclusive)
     /// * `i` - index of element in initial array
     /// * `new_val` - new value of `i`-th element
-    fn __set(&mut self, v: usize, l: usize, r: usize, i: usize, new_val: T) {
+    fn __set(&mut self, tree_id: usize, tree_l: usize, tree_r: usize, i: usize, new_val: T) {
         // Node contains one element and its index is `i`
-        if i == l && r - l == 1 {
-            self.tree[v] = new_val;
+        if i == tree_l && tree_r - tree_l == 1 {
+            self.tree[tree_id] = new_val;
             return;
         }
 
-        // Divide l..r into two halves and update current node value from children
-        let m: usize = (l + r) / 2;
+        // Divide tree_l..tree_r into two halves and update current node value from children
+        let m: usize = (tree_l + tree_r) / 2;
         if i < m {
             // `i`-th element lies in left child
-            self.__set(2 * v + 1, l, m, i, new_val);
+            self.__set(2 * tree_id + 1, tree_l, m, i, new_val);
         } else if m <= i {
             // `i`-th element lies in right child
-            self.__set(2 * v + 2, m, r, i, new_val);
+            self.__set(2 * tree_id + 2, m, tree_r, i, new_val);
         }
-        self.tree[v] = self.__combine(self.tree[2 * v + 1], self.tree[2 * v + 2]);
+        self.tree[tree_id] = self.__combine(self.tree[2 * tree_id + 1], self.tree[2 * tree_id + 2]);
     }
 
     /// Friendly interface of `__set` with `i` assert
