@@ -8,12 +8,11 @@ competitive programming, written with Rust.
   (with unit test)
 
 # Currently supported Algorithms
-* _oops_
+* Bubble Sort
 
 # TODO:
 * Range operations in Segment tree
 * Sorting algorithms:
-  * Bubble Sort
   * Insertion Sort
   * Selection Sort
   * Counting Sort
