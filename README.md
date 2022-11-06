@@ -3,12 +3,15 @@
 rust_aads is an open repository with algorithms and data structures, used in computer science and 
 competitive programming, written with Rust.
 
+`lib.rs` file contains tests for structures and algorithms and data structures are splitted into 
+their own files. Please, message me / do PR if there is a better way to do this.
+
 # Currently supported Data Structures
-* [Segment Tree](https://en.wikipedia.org/wiki/Segment_tree) - `SegmentTree` struct in `lib.rs` 
-  (with unit test)
+* [Segment Tree](https://en.wikipedia.org/wiki/Segment_tree) - `SegmentTree` struct in `segtree.rs`
 
 # Currently supported Algorithms
-* Bubble Sort
+* [Bubble Sort](https://en.wikipedia.org/wiki/Bubble_sort) - `bubble_sort` function in `sortings.
+  rs`
 
 # TODO:
 * Range operations in Segment tree
