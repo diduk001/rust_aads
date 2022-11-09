@@ -1,8 +1,8 @@
 #![crate_name = "rust_aads"]
 
+mod algebra;
 mod segtree;
 mod sortings;
-mod algebra;
 
 #[cfg(test)]
 mod segment_tree_tests {
@@ -151,11 +151,14 @@ mod exponentiation_tests {
     use super::*;
     use algebra::binary_exponentiation;
     use rand::Rng;
+    use std::ops::Mul;
 
+    /// Iterative exponentiation, multiply `result` by `element` `power` times
+    fn iterative_exponentiation<T: Copy + Mul<Output = T>>(element: T, power: u64) -> T {
+        assert!(power > 0);
 
-    fn iterative_exponentiation(element: u64, power: u64) -> u64 {
-        let mut result = 1;
-        for _ in 0..power {
+        let mut result = element;
+        for _ in 1..power {
             result *= element;
         }
 
@@ -163,6 +166,7 @@ mod exponentiation_tests {
     }
 
     #[test]
+    /// Precomputed test
     fn basic_test() {
         let correct: i32 = 9_765_625;
         let testing = binary_exponentiation(25, 5);
@@ -170,6 +174,7 @@ mod exponentiation_tests {
     }
 
     #[test]
+    /// Some small numbers to not overflow `u64`
     fn small_random_numbers() {
         let mut rng = rand::thread_rng();
         let element: u64 = rng.gen_range(1..=15);

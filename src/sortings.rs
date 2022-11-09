@@ -50,7 +50,6 @@ pub fn insertion_sort<T: Copy + Ord>(v: &mut Vec<T>) {
     }
 }
 
-
 /// Sorts a vector od `i32`s using
 /// [counting sort algorithm](https://en.wikipedia.org/wiki/Counting_sort),
 /// time complexity is O(N), where `N` is a length of `[min_element, max_element]`.
@@ -103,30 +102,47 @@ pub fn insertion_sort<T: Copy + Ord>(v: &mut Vec<T>) {
 /// * v - mutable vector of `i32`s, that will be sorted
 pub fn counting_sort(v: &mut Vec<i32>) {
     let n = v.len();
-    if n == 0 { return; }
+    if n == 0 {
+        return;
+    }
 
     use std::collections::HashMap;
+    // Count occurrences of elements
     let mut counter = HashMap::new();
 
+    // Minimum and maximum elements for range
     let mut min_element = v[0];
     let mut max_element = v[0];
 
     for &el in v.iter() {
-        if el < min_element { min_element = el; }
-        if max_element < el { max_element = el; }
+        // Update minimum and maximum
+        if el < min_element {
+            min_element = el;
+        }
+        if max_element < el {
+            max_element = el;
+        }
 
+        // Update occurrences' count
         let new_cnt: u64;
         match counter.get(&el) {
             Some(old_cnt) => new_cnt = old_cnt + 1,
-            None => new_cnt = 1
+            None => new_cnt = 1,
         }
 
         counter.insert(el, new_cnt);
     }
 
+    // v_idx - index of updating element in v
     let mut v_idx = 0;
+    // iterate over elements range
     for val in min_element..=max_element {
-        if !counter.contains_key(&val) { continue; }
+        // if val is not present in v
+        if !counter.contains_key(&val) {
+            continue;
+        }
+
+        // change v
         for _ in 0..counter[&val] {
             v[v_idx] = val;
             v_idx += 1;

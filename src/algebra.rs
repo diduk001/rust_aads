@@ -12,14 +12,22 @@ pub fn binary_exponentiation<T: Copy + Mul<Output = T>>(element: T, power: u64) 
     assert!(power > 0);
 
     // base recursion vase
-    if power == 1 { return element; }
+    if power == 1 {
+        return element;
+    }
     // little optimization
-    if power == 2 { return element * element; }
+    if power == 2 {
+        return element * element;
+    }
 
     // Raise element to power `power / 2`
     let half_power = binary_exponentiation(element, power / 2);
     // square half_power (now its `element` raised to `2 * (power / 2)`
     let half_power_squared = half_power * half_power;
     // return square if power is even and else element * square
-    return if power % 2 == 0 { half_power_squared } else { element * half_power_squared }
+    return if power % 2 == 0 {
+        half_power_squared
+    } else {
+        element * half_power_squared
+    };
 }
