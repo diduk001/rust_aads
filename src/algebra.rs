@@ -11,7 +11,7 @@ pub fn binary_exponentiation<T: Copy + Mul<Output = T>>(element: T, power: u64) 
     // `power` must be at least 1
     assert!(power > 0);
 
-    // base recursion vase
+    // base recursion case
     if power == 1 {
         return element;
     }
