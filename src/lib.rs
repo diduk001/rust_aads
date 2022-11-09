@@ -2,6 +2,7 @@
 
 mod segtree;
 mod sortings;
+mod algebra;
 
 #[cfg(test)]
 mod segment_tree_tests {
@@ -142,5 +143,40 @@ mod sorting_tests {
                 (testing_function)(*sorting_function);
             }
         }
+    }
+}
+
+#[cfg(test)]
+mod exponentiation_tests {
+    use super::*;
+    use algebra::binary_exponentiation;
+    use rand::Rng;
+
+
+    fn iterative_exponentiation(element: u64, power: u64) -> u64 {
+        let mut result = 1;
+        for _ in 0..power {
+            result *= element;
+        }
+
+        return result;
+    }
+
+    #[test]
+    fn basic_test() {
+        let correct: i32 = 9_765_625;
+        let testing = binary_exponentiation(25, 5);
+        assert_eq!(correct, testing);
+    }
+
+    #[test]
+    fn small_random_numbers() {
+        let mut rng = rand::thread_rng();
+        let element: u64 = rng.gen_range(1..=15);
+        let power: u64 = rng.gen_range(1..=15);
+
+        let correct = iterative_exponentiation(element, power);
+        let testing = binary_exponentiation(element, power);
+        assert_eq!(correct, testing);
     }
 }

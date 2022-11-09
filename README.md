@@ -25,6 +25,9 @@ their own files.
   `Vec<i32>`. Generic implementation uses
   [`Step` trait](https://doc.rust-lang.org/std/iter/trait.Step.html), see 
   [issue #42168](https://github.com/rust-lang/rust/issues/42168).
+* [Binary Exponentiation](https://en.wikipedia.org/wiki/Exponentiation_by_squaring) - 
+  `binary_exponentiation` function in `algebra.rs`, implemented for generic type elements that 
+  support multiplication.
 
 
 
@@ -48,7 +51,6 @@ their own files.
   * Disjoint Set Union
   * Treap (Cartesian tree)
 * Algebra and Number Theory
-  * Binary Exponentiation
   * Primality tests (Fermat's theorem)
   * Euclidean GCD algorithm (and it's extended version)
   * Fibonacci numbers (+ O(logN)) 
