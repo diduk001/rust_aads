@@ -93,48 +93,43 @@ mod sorting_tests {
     use rand::Rng;
     use sortings::*;
 
-    /// Checks if v is sorted using comparator
-    fn is_sorted<T: Copy>(v: &Vec<T>, cmp: fn(T, T) -> bool) -> bool {
+    /// Checks if v is sorted
+    fn is_sorted<T: Copy + Ord>(v: &Vec<T>) -> bool {
         let n = v.len();
         for i in 1..n {
-            if !cmp(v[i - 1], v[i]) {
+            if v[i - 1] > v[i] {
                 return false;
             }
         }
         return true;
     }
 
-    /// Comparator for i32s
-    fn less_equal(a: i32, b: i32) -> bool {
-        return a <= b;
-    }
-
     /// Basic 10 elements test, compares sorting_func result with correct result
     ///
     /// # Arguments:
-    /// * sorting_func - sorting function (accepts Vec of i32s and comparator)
-    fn basic_10_elements_test(sorting_func: fn(&mut Vec<i32>, fn(i32, i32) -> bool)) {
+    /// * sorting_func - sorting function (accepts Vec of i32s)
+    fn basic_10_elements_test(sorting_func: fn(&mut Vec<i32>)) {
         let mut v: Vec<i32> = vec![6, 4, 7, 2, 3, 9, 1, 8, 10, 5];
         let correct: Vec<i32> = vec![1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
-        (sorting_func)(&mut v, less_equal);
+        (sorting_func)(&mut v);
         assert_eq!(correct, v);
     }
 
     /// Randomly generated 1000 int32s test, checks if sorting_func result is sorted
     ///
     /// # Arguments:
-    /// * sorting_func - sorting function (accepts Vec of i32s and comparator)
-    fn random_1000_i32s_test(sorting_func: fn(&mut Vec<i32>, fn(i32, i32) -> bool)) {
+    /// * sorting_func - sorting function (accepts Vec of i32s)
+    fn random_1000_i32s_test(sorting_func: fn(&mut Vec<i32>)) {
         let mut rng = rand::thread_rng();
         let n: usize = 1000;
         // Generate n random elements in range -1000..1000
         let mut v: Vec<i32> = (0..n).map(|_| rng.gen_range(-1000..1000)).collect();
 
-        // Call sorting function with v and less_equal comparator
-        (sorting_func)(&mut v, less_equal);
+        // Call sorting function with v
+        (sorting_func)(&mut v);
         // Check if v is sorted
-        assert!(is_sorted(&v, less_equal));
+        assert!(is_sorted(&v));
     }
 
     #[test]

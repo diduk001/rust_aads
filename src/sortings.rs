@@ -3,12 +3,11 @@
 ///
 /// # Arguments:
 /// * v - mutable vector, that will be sorted
-/// * cmp - function, comparator for sorting
-pub fn bubble_sort<T: Copy>(v: &mut Vec<T>, cmp: fn(T, T) -> bool) {
+pub fn bubble_sort<T: Ord + Copy>(v: &mut Vec<T>) {
     let n: usize = v.len();
     for i in 0..n {
         for j in 0..n - i - 1 {
-            if !cmp(v[j], v[j + 1]) {
+            if v[j] > v[j + 1] {
                 v.swap(j, j + 1);
             }
         }
@@ -20,14 +19,13 @@ pub fn bubble_sort<T: Copy>(v: &mut Vec<T>, cmp: fn(T, T) -> bool) {
 ///
 /// # Arguments:
 /// * v - mutable vector, that will be sorted
-/// * cmp - function, comparator for sorting
-pub fn selection_sort<T: Copy>(v: &mut Vec<T>, cmp: fn(T, T) -> bool) {
+pub fn selection_sort<T: Copy + Ord>(v: &mut Vec<T>) {
     let n: usize = v.len();
     for i in 0..n - 1 {
         // Find first_idx (minimum) and place it into beginning of v
         let mut first_idx = i;
         for j in i + 1..n {
-            if cmp(v[j], v[first_idx]) {
+            if v[first_idx] > v[j] {
                 first_idx = j;
             }
         }
@@ -41,12 +39,11 @@ pub fn selection_sort<T: Copy>(v: &mut Vec<T>, cmp: fn(T, T) -> bool) {
 ///
 /// # Arguments:
 /// * v - mutable vector, that will be sorted
-/// * cmp - function, comparator for sorting
-pub fn insertion_sort<T: Copy>(v: &mut Vec<T>, cmp: fn(T, T) -> bool) {
+pub fn insertion_sort<T: Copy + Ord>(v: &mut Vec<T>) {
     let n: usize = v.len();
     for i in 1..n {
         let mut j = i;
-        while j > 0 && cmp(v[j], v[j - 1]) {
+        while j > 0 && v[j - 1] > v[j] {
             v.swap(j, j - 1);
             j -= 1;
         }
