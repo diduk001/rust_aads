@@ -135,7 +135,7 @@ mod sorting_tests {
     #[test]
     /// Nested for loop iterating over testing functions and sorting functions
     fn test_all_sorting_functions() {
-        let sorting_functions = [bubble_sort, selection_sort, insertion_sort];
+        let sorting_functions = [bubble_sort, selection_sort, insertion_sort, counting_sort];
         let testing_functions = [basic_10_elements_test, random_1000_i32s_test];
         for sorting_function in sorting_functions.iter() {
             for testing_function in testing_functions.iter() {
