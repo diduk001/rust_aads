@@ -1,8 +1,8 @@
 use std::ops::Mul;
 
 /// Raises `element` to `power` using recursive
-/// [binary exponentiation](https://en.wikipedia.org/wiki/Exponentiation_by_squaring). Asymptotic
-/// is O(logP*K), where P is power and K is asymptotic of multiplication.
+/// [binary exponentiation](https://en.wikipedia.org/wiki/Exponentiation_by_squaring). Complexity
+/// is O(logP*K), where P is power and K is a complexity of multiplication.
 ///
 /// # Arguments
 /// * `element` - base of exponentiation
