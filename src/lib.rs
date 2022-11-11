@@ -159,7 +159,7 @@ mod exponentiation_tests {
 
         let mut result = element;
         for _ in 1..power {
-            result *= element;
+            result = result * element;
         }
 
         return result;
@@ -183,5 +183,82 @@ mod exponentiation_tests {
         let correct = iterative_exponentiation(element, power);
         let testing = binary_exponentiation(element, power);
         assert_eq!(correct, testing);
+    }
+}
+
+#[cfg(test)]
+mod gcd_tests {
+    use super::*;
+    use algebra::extended_euclidean_gcd;
+    use rand::Rng;
+
+    /// Compute GCD of two common iteratively (loop over all numbers 1..a)
+    fn iterative_gcd(a: i32, b: i32) -> i32 {
+        let mut res = 1;
+        for i in 1..a {
+            if a % i == 0 && b % i == 0 {
+                res = i;
+            }
+        }
+
+        return res;
+    }
+
+    #[test]
+    /// Coprime numbers, 100 and 17. x and y can be 8 and -47.
+    fn basic_coprime_test() {
+        let (a, b) = (100, 17);
+        let (mut x, mut y) = (1, 0);
+        let g = extended_euclidean_gcd(a, b, &mut x, &mut y);
+        assert_eq!(g, 1);
+        assert_eq!(a * x + b * y, g);
+    }
+
+    #[test]
+    /// Not coprime numbers, 392 = 56 * 7 and 560 = 56 * 10. x and y can be 3 and -2
+    fn basic_not_coprime_test() {
+        let (a, b) = (392, 560);
+        let (mut x, mut y) = (1, 0);
+        let g = extended_euclidean_gcd(a, b, &mut x, &mut y);
+        assert_eq!(g, 56);
+        assert_eq!(a * x + b * y, g);
+    }
+
+    #[test]
+    /// Pair of two small numbers
+    fn random_small_numbers_test() {
+        let mut rng = rand::thread_rng();
+        let (a, b) = (rng.gen_range(1..=100), rng.gen_range(1..100));
+        let (mut x, mut y) = (1, 0);
+        let g_test = extended_euclidean_gcd(a, b, &mut x, &mut y);
+        let g_correct = iterative_gcd(a, b);
+        assert_eq!(g_test, g_correct);
+        assert_eq!(a * x + b * y, g_test);
+    }
+
+    #[test]
+    /// Pair of two large numbers
+    fn random_large_numbers_test() {
+        let mut rng = rand::thread_rng();
+        let (a, b) = (rng.gen_range(1000..=10000), rng.gen_range(1000..=10000));
+        let (mut x, mut y) = (1, 0);
+        let g_test = extended_euclidean_gcd(a, b, &mut x, &mut y);
+        let g_correct = iterative_gcd(a, b);
+        assert_eq!(g_test, g_correct);
+        assert_eq!(a * x + b * y, g_test);
+    }
+
+    #[test]
+    /// Generate 1000 random pairs
+    fn random_1000_tests() {
+        let mut rng = rand::thread_rng();
+        for _ in 0..1000 {
+            let (a, b) = (rng.gen_range(1..=10000), rng.gen_range(1..=10000));
+            let (mut x, mut y) = (1, 0);
+            let g_test = extended_euclidean_gcd(a, b, &mut x, &mut y);
+            let g_correct = iterative_gcd(a, b);
+            assert_eq!(g_test, g_correct);
+            assert_eq!(a * x + b * y, g_test);
+        }
     }
 }

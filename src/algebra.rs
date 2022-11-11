@@ -31,3 +31,32 @@ pub fn binary_exponentiation<T: Copy + Mul<Output = T>>(element: T, power: u64) 
         element * half_power_squared
     };
 }
+
+/// Calculates [Greatest Common Divisor](https://en.wikipedia.org/wiki/Greatest_common_divisor)
+/// of `a` and `b` and numbers `x`, `y` such ``a * x + b * y = g` (where `g` is GCD(a, b)) using
+/// [Extended Euclidean Algorithm](https://en.wikipedia.org/wiki/Extended_Euclidean_algorithm)
+///
+/// # Arguments:
+/// * `a: i32` - first natural number,
+/// * `b: i32` - second natural number,
+/// * `x: &mut i32` - reference to x variable,
+/// * `y: $mut i32` - reference to y variable
+///
+/// Returns GCD and changes `x`, `y`
+pub fn extended_euclidean_gcd(a: i32, b: i32, x: &mut i32, y: &mut i32) -> i32 {
+    assert!(a > 0 && b > 0);
+    // Initialize x and y and x1, y1, a1, b1
+    (*x, *y) = (1, 0);
+    let (mut x1, mut y1, mut a1, mut b1) = (0, 1, a, b);
+
+    // While we can divide
+    while b1 != 0 {
+        // Divide and compute x, y, x1, y1
+        let q = a1 / b1;
+        (*x, x1) = (x1, *x - q * x1);
+        (*y, y1) = (y1, *y - q * y1);
+        // Update a1 and b1
+        (a1, b1) = (b1, a1 - q * b1);
+    }
+    return a1;
+}

@@ -14,8 +14,8 @@ their own files.
   `segtree.rs` for generic type elements and combination function.
 
 # Currently implemented Algorithms
-* [Bubble Sort](https://en.wikipedia.org/wiki/Bubble_sort) - `bubble_sort` function in `sortings.
-  rs` for generic type elements
+* [Bubble Sort](https://en.wikipedia.org/wiki/Bubble_sort) - `bubble_sort` function in `sortings. rs`
+for generic type elements
 * [Selection Sort](https://en.wikipedia.org/wiki/Selection_sort) - `selection_sort` function in 
   `sortings.rs`  for generic type elements
 * [Insertion Sort](https://en.wikipedia.org/wiki/Insertion_sort) - `insertion_sort` function in 
@@ -28,9 +28,8 @@ their own files.
 * [Binary Exponentiation](https://en.wikipedia.org/wiki/Exponentiation_by_squaring) - 
   `binary_exponentiation` function in `algebra.rs`, implemented for generic type elements that 
   support multiplication.
-
-
-
+* [Extended Euclidean GCD Algorithm](https://en.wikipedia.org/wiki/Extended_Euclidean_algorithm) -
+`extended_euclidean_algorithm` function in `algebra.rs`. Implemented only for `i32`'s
 # TODO:
 * Add more tests (with different data types and operations)
 * Range operations in Segment tree
@@ -53,7 +52,6 @@ their own files.
 * Algebra and Number Theory
   * Matrices
   * Primality tests (Fermat's theorem)
-  * Euclidean GCD algorithm (and it's extended version)
   * Fibonacci numbers (+ O(logN)) 
   * Factorization
 * Graph algorithms
