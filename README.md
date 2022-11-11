@@ -51,6 +51,7 @@ their own files.
   * Disjoint Set Union
   * Treap (Cartesian tree)
 * Algebra and Number Theory
+  * Matrices
   * Primality tests (Fermat's theorem)
   * Euclidean GCD algorithm (and it's extended version)
   * Fibonacci numbers (+ O(logN)) 
