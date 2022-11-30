@@ -29,8 +29,11 @@ for generic type elements
   `binary_exponentiation` function in `algebra.rs`, implemented for generic type elements that 
   support multiplication.
 * [Extended Euclidean GCD Algorithm](https://en.wikipedia.org/wiki/Extended_Euclidean_algorithm) -
-`extended_euclidean_algorithm` function in `algebra.rs`. Implemented only for `i32`'s
+  `extended_euclidean_algorithm` function in `algebra.rs`. Implemented only for `i32`'s
+* Matrices
 # TODO:
+
+* Add Matrices tests and more operations (transpose, get shape, get determinant)
 * Add more tests (with different data types and operations)
 * Range operations in Segment tree
 * Sorting algorithms:
@@ -50,7 +53,6 @@ for generic type elements
   * Disjoint Set Union
   * Treap (Cartesian tree)
 * Algebra and Number Theory
-  * Matrices
   * Primality tests (Fermat's theorem)
   * Fibonacci numbers (+ O(logN)) 
   * Factorization
